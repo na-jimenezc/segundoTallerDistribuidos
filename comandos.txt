@@ -1,0 +1,13 @@
+ANTES DE CORRER EL PROTO TOCA TENER EL "COMPILADOR"
+pip install grpcio grpcio-tools
+
+PARA CORRER EL PROTO
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. sumadorVector.proto
+
+ESE COMANDO GENERA
+sumadorVector_pb2.py y sumadorVector_pb2_grpc.py
+
+python servidorOp1.py
+python servidorOp2.py
+python centroCalculo.py
+python cliente.py
