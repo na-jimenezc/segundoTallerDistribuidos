@@ -1,48 +1,43 @@
-	syntax = "proto3";
+syntax = "proto3";
 
-	package sumadorVector;
+package sumadorVector;
 
-    /*El request se basa en mandar el vector de números 
-    /para que el centro de calculo y operador 1 lo maneje*/
-    message VectorRequest {
-        repeated int32 numeros = 1;
-    }
-    
-    /*El mensaje enviado de operador 1 a operador 2 consiste en la suma parcial
-    /y el resto del vector*/
-	message SumaParcialResponse {
-        int32 sumaParcial = 1;
-        repeated int32 numeros = 2;
-    }
-    
-	/*Se define el servicio del Operador 1 que se basa en sumar los dígitos del
-	/vector. Se toma la mitad del vector como el mensaje necesario, y se devuelve la suma como 
-    /response*/
-	service Operador1 {
-        rpc SumarParcial (VectorRequest) returns (SumaParcialResponse);
-    }
-    
-    /*El mensaje enviado de operador 2 a operador 2 consiste en la suma parcial
-    /y el resto del vector*/
-	message SumaParcialRequest {
-	  int32 sumaParcial = 1;
-	  repeated int32 numeros = 2;
-	}
 
-    /*Se define el servicio del Operador 2 que se basa en sumar lo que queda del vector
-    /se recibe el request de la suma partical y se retorna la suma response*/
-	service Operador2 {
-        rpc SumarFinal (SumaParcialRequest) returns (SumaResponse);
-    }
+/*Se definen los servicios de cada una de las clases que hacen algo*/
+service CentroCalculo {
+  rpc SumarVector (VectorRequest) returns (SumaResponse);
+}
 
-	/*El response será sumplemente la suma devuelta por
-	/el servicio, la final y la parcial*/
-	message SumaResponse {
-        int32 resultado = 1;
-    }
-    
-    /*Y se define el servicio de CentroCalculo que tiene el vector inicial y responde conjugate
-    el total*/
-    service CentroCalculo {
-        rpc SumarVector (VectorRequest) returns (SumaResponse);
-    }
+service Operador1 {
+  rpc SumarParcial (SumaParcialRequest) returns (SumaParcialResponse);
+}
+
+service Operador2 {
+  rpc SumarFinal (SumaFinalRequest) returns (SumaResponse);
+}
+
+/*Request para pasarselo de CentroCalculo->Cliente*/
+message VectorRequest {
+  repeated int32 numeros = 1;
+}
+
+/*Respuesta de Operador1->CentroCalculo y de CentroCalculo->Cliente*/
+message SumaResponse {
+  int32 resultado = 1;
+}
+
+/*Request Operador1->CentroCalculo*/
+message SumaParcialRequest {
+  repeated int32 numeros = 1;
+}
+
+/*Respuesta de Operador1->CentroCalculo*/
+message SumaParcialResponse {
+  int32 sumaParcial = 1;
+}
+
+/*Request para Operador2->CentroCalculo*/
+message SumaFinalRequest {
+  int32 sumaParcial = 1;
+  repeated int32 numeros = 2;
+}

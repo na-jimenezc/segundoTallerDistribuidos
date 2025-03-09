@@ -4,7 +4,7 @@ import sumadorVector_pb2_grpc
 import time
 
 TIMEOUTCLIENT = 10
-MAX_INTENTOS = 3  # Intentos totales (1 inicial + 2 reintentos)
+MAX_INTENTOS = 3  
 
 def run():
         '''Se solicita ingresar los números y después se convierten a un vector entero tomando en cuenta
@@ -14,7 +14,7 @@ def run():
 
         '''Nos conectamos al canal para recibir y enviar mensajes con el centro de calculo y se llama
         ///al STUB para poder usar los métodos necesarios'''
-        channel = grpc.insecure_channel('localhost:50050')
+        channel = grpc.insecure_channel('127.0.0.1:50050')
         stub = sumadorVector_pb2_grpc.CentroCalculoStub(channel)
 
         '''Finalmente se envia el vector en el forma del VECTORREQUEST y se espera a la respuesta'''
@@ -38,7 +38,7 @@ def run():
                                 break
                         if reintentos < MAX_INTENTOS:
                                 print(f"Reintentando ({reintentos}/{MAX_INTENTOS})...")
-                                time.sleep(1) #espacio entre reintentos
+                                time.sleep(1) #Y se pone a dormir para dar espacio entre intentos de conexión
                         else:
                                 print("No se pudo completar la operación.")
                                 break
