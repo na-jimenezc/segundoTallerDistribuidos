@@ -6,16 +6,17 @@ import sumadorVector_pb2_grpc
 class Operador2(sumadorVector_pb2_grpc.Operador2Servicer):
     def SumarFinal(self, request, context):
         try:
-            # Se extrae la suma parcial y la lista de números recibida
-            suma_parcial = request.sumaParcial
-            numeros = request.numeros
+            #Impresiones de confirmación
+            print(f"[Operador2] Recibido suma parcial: {request.sumaParcial}")
+            print(f"[Operador2] Recibido vector para sumar: {request.numeros}")
 
-            # Se calcula la suma final: suma parcial + suma de los números adicionales
-            suma_final = suma_parcial + sum(numeros)
+            suma_final = request.sumaParcial + sum(request.numeros)
+            print(f"[Operador2] Resultado suma final: {suma_final}")
 
-            # Se retorna el resultado en un mensaje SumaResponse
+            #Se retorna la suma final a partir de los numeros y de la suma parcial del operador1
             return sumadorVector_pb2.SumaResponse(resultado=suma_final)
         except Exception as e:
+            print(f"[Operador2] Error: {str(e)}")
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error en Operador2: {str(e)}")
             return sumadorVector_pb2.SumaResponse()
@@ -23,10 +24,9 @@ class Operador2(sumadorVector_pb2_grpc.Operador2Servicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sumadorVector_pb2_grpc.add_Operador2Servicer_to_server(Operador2(), server)
-    # Se define el puerto en el que Operador 2 escuchará (50052 en este ejemplo)
     server.add_insecure_port('[::]:50052')
+    print("[Operador2] Servidor iniciado en el puerto 50052")
     server.start()
-    print("Operador 2 escuchando en el puerto 50052...")
     server.wait_for_termination()
 
 if __name__ == '__main__':

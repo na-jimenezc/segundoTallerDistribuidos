@@ -6,12 +6,15 @@ import sumadorVector_pb2_grpc
 class Operador1(sumadorVector_pb2_grpc.Operador1Servicer):
     def SumarParcial(self, request, context):
         try:
-            # vectorsito
-            numeros = request.numeros
-            suma_parcial = sum(numeros)
-            # devolver la suma y el arreglo vacio para el centrico de calculo
-            return sumadorVector_pb2.SumaParcialResponse(sumaParcial=suma_parcial,numeros=[])
+            #Impresiones de confirmación
+            print(f"[Operador1] Recibido vector para sumar: {request.numeros}")
+            suma_parcial = sum(request.numeros)
+            print(f"[Operador1] Resultado suma parcial: {suma_parcial}")
+
+            #Se retorna el response de la suma parcial
+            return sumadorVector_pb2.SumaParcialResponse(sumaParcial=suma_parcial)
         except Exception as e:
+            print(f"[Operador1] Error: {str(e)}")
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error en Operador1: {str(e)}")
             return sumadorVector_pb2.SumaParcialResponse()
@@ -20,8 +23,8 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sumadorVector_pb2_grpc.add_Operador1Servicer_to_server(Operador1(), server)
     server.add_insecure_port('[::]:50051')
+    print("[Operador1] Servidor iniciado en el puerto 50051")
     server.start()
-    print("Operador 1 escuchando en el puerto 50051...")
     server.wait_for_termination()
 
 if __name__ == '__main__':

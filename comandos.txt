@@ -7,7 +7,7 @@ python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. sumadorVecto
 ESE COMANDO GENERA
 sumadorVector_pb2.py y sumadorVector_pb2_grpc.py
 
-python servidorOp1.py
-python servidorOp2.py
-python centroCalculo.py
-python cliente.py
+python Operador1.py
+python Operador2.py
+python CentroCalculo.py
+python Cliente.py
