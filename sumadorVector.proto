@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package sumadorVector;
 
-
-/*Se definen los servicios de cada una de las clases que hacen algo*/
 service CentroCalculo {
   rpc SumarVector (VectorRequest) returns (SumaResponse);
 }
@@ -16,27 +14,22 @@ service Operador2 {
   rpc SumarFinal (SumaFinalRequest) returns (SumaResponse);
 }
 
-/*Request para pasarselo de CentroCalculo->Cliente*/
 message VectorRequest {
   repeated int32 numeros = 1;
 }
 
-/*Respuesta de Operador1->CentroCalculo y de CentroCalculo->Cliente*/
 message SumaResponse {
   int32 resultado = 1;
 }
 
-/*Request Operador1->CentroCalculo*/
 message SumaParcialRequest {
   repeated int32 numeros = 1;
 }
 
-/*Respuesta de Operador1->CentroCalculo*/
 message SumaParcialResponse {
   int32 sumaParcial = 1;
 }
 
-/*Request para Operador2->CentroCalculo*/
 message SumaFinalRequest {
   int32 sumaParcial = 1;
   repeated int32 numeros = 2;

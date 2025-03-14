@@ -38,7 +38,7 @@ def run():
                                 break
                         if reintentos < MAX_INTENTOS:
                                 print(f"Reintentando ({reintentos}/{MAX_INTENTOS})...")
-                                time.sleep(1) #Y se pone a dormir para dar espacio entre intentos de conexión
+                                time.sleep(1) #espacio entre reintentos
                         else:
                                 print("No se pudo completar la operación.")
                                 break

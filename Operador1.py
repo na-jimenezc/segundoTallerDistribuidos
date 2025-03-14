@@ -6,12 +6,10 @@ import sumadorVector_pb2_grpc
 class Operador1(sumadorVector_pb2_grpc.Operador1Servicer):
     def SumarParcial(self, request, context):
         try:
-            #Impresiones de confirmación
             print(f"[Operador1] Recibido vector para sumar: {request.numeros}")
             suma_parcial = sum(request.numeros)
             print(f"[Operador1] Resultado suma parcial: {suma_parcial}")
 
-            #Se retorna el response de la suma parcial
             return sumadorVector_pb2.SumaParcialResponse(sumaParcial=suma_parcial)
         except Exception as e:
             print(f"[Operador1] Error: {str(e)}")
